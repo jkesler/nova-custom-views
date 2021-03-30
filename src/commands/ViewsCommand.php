@@ -1,6 +1,6 @@
 <?php
 
-namespace devmtm\NovaCustomViews;
+namespace devmtm\NovaCustomViews\Command;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
@@ -73,7 +73,7 @@ class ViewsCommand extends Command
     protected function handelNewResource() {
 
         (new Filesystem)->copyDirectory(
-            __DIR__ . '/../stubs/views',
+            __DIR__ . '/../../stubs/views',
             $this->viewsPath()
         );
 
@@ -179,7 +179,7 @@ class ViewsCommand extends Command
      */
     protected function installNpmDependencies()
     {
-        $this->commands('npm set progress=false && npm install', $this->viewsPath());
+        $this->runCommand('npm set progress=false && npm install', $this->viewsPath());
     }
 
     /**
@@ -189,7 +189,7 @@ class ViewsCommand extends Command
      */
     protected function compile()
     {
-        $this->commands('npm run dev', $this->viewsPath());
+        $this->runCommand('npm run dev', $this->viewsPath());
     }
 
     /**
@@ -199,7 +199,7 @@ class ViewsCommand extends Command
      */
     protected function composerUpdate()
     {
-        $this->commands('composer update', getcwd());
+        $this->runCommand('composer update', getcwd());
     }
 
     /**
@@ -209,7 +209,7 @@ class ViewsCommand extends Command
      * @param  string  $path
      * @return void
      */
-    protected function commands($command, $path)
+    protected function runCommand($command, $path)
     {
         $process = (new Process($command, $path))->setTimeout(null);
 
@@ -364,21 +364,21 @@ class ViewsCommand extends Command
 
     protected function copyView($view) {
         (new Filesystem)->copy(
-            __DIR__ . '/../stubs/views/resources/js/views/' . $view,
+            __DIR__ . '/../../stubs/views/resources/js/views/' . $view,
             $this->viewsPath() . '/resources/js/views/' . $view
         );
     }
 
     protected function copyAllViews() {
         (new Filesystem)->copyDirectory(
-            __DIR__ . '/../stubs/views/resources/js/views',
+            __DIR__ . '/../../stubs/views/resources/js/views',
             $this->viewsPath() . '/resources/js/views'
         );
     }
 
     protected function copyServiceProvider() {
         (new Filesystem)->copy(
-            __DIR__ . '/../stubs/views/src/ViewsServiceProvider.stub',
+            __DIR__ . '/../../stubs/views/src/ViewsServiceProvider.stub',
             $this->viewsPath() . '/src/ViewsServiceProvider.stub'
         );
     }
@@ -392,14 +392,14 @@ class ViewsCommand extends Command
 
     protected function copyComponentsRegistrar() {
         (new Filesystem)->copy(
-            __DIR__ . '/../stubs/views/resources/js/views.js',
+            __DIR__ . '/../../stubs/views/resources/js/views.js',
             $this->viewsPath() . '/resources/js/views.js'
         );
     }
 
     protected function copyComposer() {
         (new Filesystem)->copy(
-            __DIR__ . '/../stubs/views/composer.json',
+            __DIR__ . '/../../stubs/views/composer.json',
             $this->viewsPath() . '/composer.json'
         );
     }
